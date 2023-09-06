@@ -183,6 +183,8 @@ class CBooleanModel:
         if verbose:
             print(f'Rendering complete. The image can be accessed with \'self.Image\'.')
         self._Rendered = True
+        if self.Inversion:
+            self.Image = np.invert(self.Image)
         return
 
     def save_configuration(self,foldername='',number=None):
@@ -425,6 +427,7 @@ def num2str(number,k = 2):
 
 # Rendering function to a 3D Viewer
 def Render3DImage(img):
+    img = np.pad(img, 1, 'constant', constant_values=(0))
     image_data = vtk.vtkImageData()
     image_data.SetDimensions(img.shape[::-1])
     image_data.SetSpacing(1, 1, 1)
